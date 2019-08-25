@@ -1,0 +1,36 @@
+{
+  "name": "todo-app-server-node",
+  "version": "1.0.0",
+  "description": "Node.js server for TODO App.",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=prod node index",
+    "dev": "NODE_ENV=dev nodemon index",
+    "test": "NODE_ENV=test mocha 'tests/**/*.js' --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clpalacios/todo-app.git"
+  },
+  "author": "Cesar Palacios cesarlp.ng@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Clpalacios/todo-app/issues"
+  },
+  "homepage": "https://github.com/Clpalacios/todo-app#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.20.0",
+    "mongoose": "^5.6.10",
+    "morgan": "^1.9.1",
+    "rotating-file-stream": "^1.4.3",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.1"
+  }
+}

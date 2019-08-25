@@ -1,0 +1,42 @@
+# docker compose target version
+version: '3.7'
+
+services:
+  # mongo db
+  db_mongo:
+    container_name: mongodb
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: ${APP_DB_MONGO_NAME}
+    ports:
+      - ${APP_DB_MONGO_PORT}:${APP_DB_MONGO_PORT}
+
+  # node container
+  server_node:
+    container_name: node
+    restart: always
+    build: ./server
+    expose:
+      - ${APP_SERVER_NODE_PORT}
+    environment:
+      APP_SERVER_NODE_PORT: ${APP_SERVER_NODE_PORT}
+      APP_DB_MONGO_URI: ${APP_DB_MONGO_URI}
+    ports:
+      - ${APP_SERVER_NODE_PORT}:${APP_SERVER_NODE_PORT}
+    links:
+      - db_mongo
+    depends_on:
+      - db_mongo
+
+  # react container
+  client_react:
+    container_name: react
+    build: ./client
+    environment:
+      - APP_CLIENT_PORT = ${APP_CLIENT_PORT}
+    expose:
+      - ${APP_CLIENT_PORT}
+    ports:
+      - ${APP_CLIENT_PORT}:${APP_CLIENT_PORT}
+    links:
+      - server_node
