@@ -1,19 +1,17 @@
 import React from 'react';
 
-import AppBar from '@material-ui/core/AppBar';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { createStyles, makeStyles, AppBar, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme =>
   createStyles({
     appBar: {
-      backgroundColor: '#eac0c0',
+      backgroundColor: '#ff8a65',
       padding: theme.spacing(1),
       marginBottom: theme.spacing(2)
     },
     title: {
       flexGrow: 1,
-      color: '#58534ded'
+      color: '#33281ced'
     },
   })
 );

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 
-import Task from '../Task/Task';
+import Task from './Task';
 
-const TaskList = (props) => {
+const TaskList = props => {
   const { onCompleteTask, onDeleteTask } = props;
 
   const tasks = props.tasks.map(task => {

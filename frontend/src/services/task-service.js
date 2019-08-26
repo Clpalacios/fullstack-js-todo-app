@@ -1,19 +1,21 @@
-import axiosClient from "../config/http-client";
+import axiosClient from "../config/axios-client";
 
-const retrieveTasks = () => {
-  return axiosClient.get('/tasks');
+const basePath = '/tasks';
+
+const getTasks = () => {
+  return axiosClient.get(basePath);
 }
 
-const addNewTask = task => {
-  return axiosClient.post('/tasks', task);
+const addTask = task => {
+  return axiosClient.post(basePath, task);
 }
 
 const deleteTask = id => {
-  return axiosClient.delete(`/tasks/${id}`);
+  return axiosClient.delete(`${basePath}/${id}`);
 }
 
 const completeTask = id => {
-  return axiosClient.put(`/tasks/${id}/complete`);
+  return axiosClient.put(`${basePath}/${id}/complete`);
 }
 
-export { addNewTask, completeTask, deleteTask, retrieveTasks };
+export { addTask, completeTask, deleteTask, getTasks };

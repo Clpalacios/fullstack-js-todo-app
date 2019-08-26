@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import Container from '@material-ui/core/Container';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Container } from '@material-ui/core';
 
-import NavBar from './components/NavBar/NavBar';
-import TaskList from './components/TaskList/TaskList';
-import CompletedTaskList from './components/CompletedTaskList/CompletedTaskList';
-import NewTask from './components/NewTask/NewTask';
-import { completeTask, deleteTask, retrieveTasks } from './services/task-service';
+import { NavBar, Notification } from './components/layout';
+import { CompletedTaskList, NewTask, TaskList } from './components/task';
+import { completeTask, deleteTask, getTasks } from './services/task-service';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -21,14 +18,17 @@ const App = () => {
   const classes = useStyles();
   const [tasks, setTasks] = useState([])
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [notificationMustBeDisplayed, setNotificationMustBeDisplayed] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationType, setNotificationType] = useState('info');
 
   useEffect(() => {
-    retrieveTasks().then(response => {
+    getTasks().then(response => {
       const tasks = response.data;
-      const todo = tasks.filter(t => !t.completed);
+      const toComplete = tasks.filter(t => !t.completed);
       const completed = tasks.filter(t => t.completed);
 
-      setTasks(todo);
+      setTasks(toComplete);
       setCompletedTasks(completed);
     });
   }, []);
@@ -46,6 +46,8 @@ const App = () => {
 
       setTasks([...tasks]);
       setCompletedTasks([completedTask, ...completedTasks]);
+
+      displayNotification('Task completed!', 'success')
     });
   }
 
@@ -61,7 +63,19 @@ const App = () => {
         completedTasks.splice(index, 1);
         setCompletedTasks([...completedTasks]);
       }
+
+      displayNotification('Task eliminated successfully.', 'info');
     });
+  }
+
+  const handleCloseNotification = () => {
+    setNotificationMustBeDisplayed(false);
+  }
+
+  const displayNotification = (message, type) => {
+    setNotificationType(type);
+    setNotificationMessage(message);
+    setNotificationMustBeDisplayed(true);
   }
 
   return (
@@ -76,6 +90,11 @@ const App = () => {
         <CompletedTaskList
           completedTasks={completedTasks}
           onDeleteTask={handleDeleteTask} />
+        <Notification
+          message={notificationMessage}
+          open={notificationMustBeDisplayed}
+          type={notificationType}
+          onClick={handleCloseNotification} />
       </Container>
     </div>
   );

@@ -1,19 +1,28 @@
 import React from 'react';
 
-import { createStyles, makeStyles } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Delete from '@material-ui/icons/Delete';
+import {
+  createStyles,
+  makeStyles,
+  Card,
+  CardContent,
+  Checkbox,
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme =>
   createStyles({
     card: {
       marginLeft: theme.spacing(1),
     },
-    icon: {
+    check: {
+      color: theme.palette.primary.main
+    },
+    completedTask: {
+      textDecoration: 'line-through'
+    },
+    deleteIcon: {
       color: theme.palette.secondary.main,
       paddingTop: theme.spacing(1),
       '&:hover': {
@@ -24,19 +33,16 @@ const useStyles = makeStyles(theme =>
       flexGrow: 1,
       paddingTop: theme.spacing(1) + theme.spacing(1) / 2,
       overflowWrap: 'break-word',
-    },
-    completedTask: {
-      textDecoration: 'line-through'
     }
   })
 );
 
-const Task = (props) => {
+const Task = props => {
   const { task, onCompleteTask, onDeleteTask } = props;
   const classes = useStyles();
 
   const handleCompleteTask = () => {
-    onCompleteTask(task._id)
+    onCompleteTask(task._id);
   }
 
   const handleDeleteTask = () => {
@@ -51,12 +57,11 @@ const Task = (props) => {
             <Grid item xs={2} sm={1}>
               <Checkbox
                 checked={false}
+                className={classes.check}
                 color="primary"
-                onChange={handleCompleteTask}
+                inputProps={{ 'aria-label': 'primary checkbox', }}
                 value={task.completed}
-                inputProps={{
-                  'aria-label': 'primary checkbox',
-                }}
+                onChange={handleCompleteTask}
               />
             </Grid>
           }
@@ -69,8 +74,7 @@ const Task = (props) => {
           </Grid>
           <Grid item xs={1}>
             <Delete
-              className={classes.icon}
-              titleAccess='Delete'
+              className={classes.deleteIcon}
               onClick={handleDeleteTask} />
           </Grid>
         </Grid>

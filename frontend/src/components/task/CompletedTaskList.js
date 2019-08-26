@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 
-import Task from '../Task/Task';
+import Task from './Task';
 
-const CompletedTaskList = (props) => {
+const CompletedTaskList = props => {
   const { onDeleteTask } = props;
 
   const tasks = props.completedTasks.map(task => {
@@ -13,7 +13,7 @@ const CompletedTaskList = (props) => {
         key={task._id}
         task={task}
         onDeleteTask={onDeleteTask} />
-    )
+    );
   });
 
   return (

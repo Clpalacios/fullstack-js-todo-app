@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
-import { createStyles, makeStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import {
+  createStyles,
+  makeStyles,
+  Button,
+  Grid,
+  TextField
+} from '@material-ui/core';
 
-import { addNewTask } from '../../services/task-service';
+import { addTask } from '../../services/task-service';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -18,13 +21,13 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const NewTask = (props) => {
+const NewTask = props => {
   const classes = useStyles();
   const [task, setTask] = useState('');
 
   const handleNewTodoEntry = () => {
-    const newTask = { description: task, completed: false }
-    addNewTask(newTask).then(response => {
+    const newTask = { description: task, completed: false };
+    addTask(newTask).then(response => {
       setTask('');
       props.onNewTaskCreated(response.data);
     });
