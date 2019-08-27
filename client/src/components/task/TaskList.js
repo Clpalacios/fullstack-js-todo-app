@@ -1,11 +1,20 @@
 import React from 'react';
 
-import { Box, Typography } from '@material-ui/core';
+import { createStyles, makeStyles, Box, Typography } from '@material-ui/core';
 
 import Task from './Task';
 
+const useStyles = makeStyles(theme =>
+  createStyles({
+    title: {
+      color: '#616db0',
+    }
+  })
+);
+
 const TaskList = props => {
   const { onCompleteTask, onDeleteTask } = props;
+  const classes = useStyles();
 
   const tasks = props.tasks.map(task => {
     return (
@@ -21,7 +30,7 @@ const TaskList = props => {
     <Box>
       {tasks.length > 0 &&
         <Box>
-          <Typography variant="h6" color="secondary">
+          <Typography variant="h6" className={classes.title}>
             In progress
           </Typography>
           {tasks}

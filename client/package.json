@@ -1,5 +1,5 @@
 {
-  "name": "todo-app-frontend",
+  "name": "todo-app-client-react",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -11,7 +11,7 @@
     "react-scripts": "3.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
