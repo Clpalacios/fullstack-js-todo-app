@@ -23,12 +23,11 @@ const useStyles = makeStyles(theme =>
 
 const NewTask = props => {
   const classes = useStyles();
-  const [task, setTask] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
 
   const handleNewTodoEntry = () => {
-    const newTask = { description: task, completed: false };
-    addTask(newTask).then(response => {
-      setTask('');
+    addTask({ description: taskDescription }).then(response => {
+      setTaskDescription('');
       props.onNewTaskCreated(response.data);
     });
   }
@@ -46,8 +45,8 @@ const NewTask = props => {
           InputLabelProps={{
             shrink: true,
           }}
-          value={task}
-          onChange={ev => setTask(ev.target.value)}
+          value={taskDescription}
+          onChange={ev => setTaskDescription(ev.target.value)}
         />
       </Grid>
       <Grid item xs={3} sm={2}>
@@ -55,7 +54,7 @@ const NewTask = props => {
           variant="contained"
           color="primary"
           className={classes.button}
-          disabled={task === ''}
+          disabled={taskDescription === ''}
           onClick={handleNewTodoEntry}>
           Add
         </Button>
