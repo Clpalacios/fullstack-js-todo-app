@@ -8,6 +8,8 @@ WORKDIR /src/app/server/node
 COPY package*.json ./
 
 RUN npm install
+# if building code for production
+# npm ci --only=production
 
 # Bundle app source
 COPY . .
@@ -15,4 +17,3 @@ COPY . .
 EXPOSE 8080
 
 CMD [ "node", "index.js" ]
-# CMD [ "npm", "run", "dev" ]
