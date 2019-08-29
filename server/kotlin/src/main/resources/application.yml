@@ -1,0 +1,10 @@
+application:
+  name: todo-app-server-kotlin
+server:
+  port: 8081
+spring:
+  data:
+    mongodb:
+      database: todoAppDB
+      host: localhost
+      port: 27017
