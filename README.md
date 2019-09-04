@@ -3,7 +3,7 @@ TODO App built with React, Express/Kotlin and MongoDB.
 
 ## Instructions
 
-- Download the repo.
+- Download/clone the repo
 - Move into the project folder
 
   > cd todo-app
