@@ -1,10 +1,10 @@
 application:
-  name: todo-app-server-kotlin
+  name: todo-app
 server:
   port: 8081
 spring:
   data:
     mongodb:
-      database: todoAppDB
-      host: localhost
-      port: 27017
+      database: ${APP_DB_MONGO_NAME:todoAppDB}
+      host: ${APP_DB_MONGO_HOST:localhost}
+      port: ${APP_DB_MONGO_PORT:27017}

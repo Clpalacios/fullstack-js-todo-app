@@ -11,16 +11,16 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 
 @Configuration
 @EnableReactiveMongoRepositories
-class MongoConfig : AbstractReactiveMongoConfiguration() {
-
-  @Value("\${spring.data.mongodb.database}")
-  private lateinit var dbName: String
+class MongoConfig(
+  @Value("\${spring.data.mongodb.database}") private val dbName: String,
+  @Value("\${spring.data.mongodb.host}") private val host: String
+)  : AbstractReactiveMongoConfiguration() {
 
   override fun getDatabaseName() = dbName
 
   @Bean
   override fun reactiveMongoClient(): MongoClient {
-    return MongoClients.create()
+    return MongoClients.create("mongodb://$host")
   }
 
   @Bean

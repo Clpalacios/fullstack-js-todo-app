@@ -1,1 +1,1 @@
-rootProject.name = "todo-app-backend-kotlin"
+rootProject.name = "todo-app"

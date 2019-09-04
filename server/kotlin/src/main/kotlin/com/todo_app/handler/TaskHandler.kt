@@ -19,7 +19,7 @@ class TaskHandler(private val taskReactiveRepository: TaskReactiveRepository) {
 
   fun createTask(taskMono: Mono<Task>): Mono<ServerResponse> {
     var location: URI
-
+    
     return taskMono.flatMap { toCreate ->
       taskReactiveRepository.save(toCreate)
         .flatMap { createdTask ->
