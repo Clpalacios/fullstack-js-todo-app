@@ -4,7 +4,7 @@ import { createStyles, makeStyles, Container } from '@material-ui/core';
 
 import { NavBar, Notification } from './components/layout';
 import { CompletedTaskList, NewTask, TaskList } from './components/task';
-import { completeTask, deleteTask, getTasks } from './services/task-service';
+import { updateTask, deleteTask, getTasks } from './services/task-service';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -37,8 +37,8 @@ const App = () => {
     setTasks([createdTask, ...tasks]);
   }
 
-  const handleCompleteTask = id => {
-    completeTask(id).then(response => {
+  const handleCompleteTask = task => {
+    updateTask(task).then(response => {
       const completedTask = response.data;
       const index = tasks.findIndex(t => t._id === completedTask._id);
 

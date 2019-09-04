@@ -42,7 +42,8 @@ const Task = props => {
   const classes = useStyles();
 
   const handleCompleteTask = () => {
-    onCompleteTask(task._id);
+    task.completed = true;
+    onCompleteTask(task);
   }
 
   const handleDeleteTask = () => {

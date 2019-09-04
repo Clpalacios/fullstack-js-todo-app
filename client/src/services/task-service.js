@@ -14,8 +14,8 @@ const deleteTask = id => {
   return axiosClient.delete(`${basePath}/${id}`);
 }
 
-const completeTask = id => {
-  return axiosClient.put(`${basePath}/${id}/complete`);
+const updateTask = task => {
+  return axiosClient.put(`${basePath}/${task._id}`, task);
 }
 
-export { addTask, completeTask, deleteTask, getTasks };
+export { addTask, updateTask, deleteTask, getTasks };
