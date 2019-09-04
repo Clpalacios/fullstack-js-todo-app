@@ -1,7 +1,8 @@
 # TODO App
 TODO App built with React, Express/Kotlin and MongoDB.
 
-#### Instructions
+### Instructions
+---
 - Download the repo.
 - Move into the project folder
 
