@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
+const logger = require('./logging');
 
 class ErrorHandler extends Error {
   constructor(statusCode, message) {
     super();
     this.statusCode = statusCode;
+    this.message = message;
+  }
+}
+
+class FieldError {
+  constructor(field, message) {
+    this.field = field;
     this.message = message;
   }
 }
@@ -21,13 +29,6 @@ class BaseErrorResponse {
 class ErrorResponse extends BaseErrorResponse {
   constructor(statusCode, message) {
     super(statusCode);
-    this.message = message;
-  }
-}
-
-class FieldError {
-  constructor(field, message) {
-    this.field = field;
     this.message = message;
   }
 }
@@ -55,7 +56,7 @@ const handleError = (error, res) => {
     response = new ErrorResponse(error.statusCode, error.message);
   }
 
-  console.error(error.message);
+  logger.error(error.message);
   res.status(response.statusCode).json(response);
 };
 
