@@ -9,6 +9,14 @@ class ErrorHandler extends Error {
   }
 }
 
+class ResourceNotFound extends Error {
+  constructor(message) {
+    super();
+    this.statusCode = 404;
+    this.message = message;
+  }
+}
+
 class FieldError {
   constructor(field, message) {
     this.field = field;
@@ -81,6 +89,7 @@ const handleError = (error, res) => {
 
 module.exports = {
   ErrorHandler,
+  ResourceNotFound,
   handleError,
   handleErrorAsync
 };
