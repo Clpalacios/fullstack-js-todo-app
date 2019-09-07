@@ -1,59 +1,33 @@
 const express = require('express');
-const TaskModel = require('../db/models/task-schema');
-const { ErrorHandler } = require('../helpers/error');
+const taskService = require('../services/task-service');
+const { handleErrorAsync } = require('../helpers/error');
 
 const router = express.Router();
 
-router.get('', async (_req, res, next) => {
-  try {
-    const tasks = await TaskModel.find();
-    res.status(200).send(tasks);
-  } catch (error) {
-    next(error);
-  }
-})
+router.get('', handleErrorAsync(async (_req, res, _next) => {
+  const tasks = await taskService.getAllTasks();
+  res.status(200).send(tasks);
+}));
 
-router.post('', async (req, res, next) => {
-  const taskToSave = new TaskModel(req.body);
-
-  try {
-    const createdTask = await taskToSave.save();
+router.post('', handleErrorAsync(async (req, res, _next) => {
+  const createdTask = await taskService.createTask(req.body);
+  if (createdTask) {
     res.status(201).send(createdTask);
-  } catch (error) {
-    next(error);
   }
-});
+}));
 
-router.delete('/:id', async (req, res, next) => {
-  const _id = req.params.id;
-
-  try {
-    const deletedTask = await TaskModel.findOneAndDelete({ _id });
-
-    if (!deletedTask) {
-      throw new ErrorHandler(404, `Task not found for id ${_id}`)
-    }
-
+router.delete('/:id', handleErrorAsync(async (req, res, _next) => {
+  const deletedTask = await taskService.deleteTask(req.params.id);
+  if (deletedTask) {
     res.status(200).send();
-  } catch (error) {
-    next(error);
   }
-});
+}));
 
-router.put('/:id', async (req, res, next) => {
-  const _id = req.params.id;
-
-  try {
-    const updatedTask = await TaskModel.findOneAndUpdate({ _id }, req.body, { new: true });
-
-    if (!updatedTask) {
-      throw new ErrorHandler(404, `Task not found for id ${_id}`);
-    }
-
+router.put('/:id', handleErrorAsync(async (req, res, _next) => {
+  const updatedTask = await taskService.updateTask(req.params.id, req.body);
+  if (updatedTask) {
     res.status(200).send(updatedTask);
-  } catch (error) {
-    next(error);
   }
-});
+}));
 
 module.exports = router;

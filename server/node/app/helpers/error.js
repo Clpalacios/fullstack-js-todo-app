@@ -17,43 +17,62 @@ class FieldError {
 }
 
 class BaseErrorResponse {
-  status;
+  type;
   statusCode;
 
-  constructor(statusCode) {
-    this.status = 'error';
+  constructor(type, statusCode) {
+    this.type = type;
     this.statusCode = statusCode;
   }
 }
 
 class ErrorResponse extends BaseErrorResponse {
-  constructor(statusCode, message) {
-    super(statusCode);
+  constructor(type, statusCode, message) {
+    super(type, statusCode);
     this.message = message;
   }
 }
 
 class ValidationErrorResponse extends BaseErrorResponse {
-  constructor(fieldErrors, globalErrors) {
-    super(422);
+  constructor(type, fieldErrors) {
+    super(type, 422);
     this.fieldErrors = fieldErrors;
-    this.globalErrors = globalErrors;
   }
 }
+
+const handleErrorAsync = func => async (req, res, next) => {
+  try {
+    await func(req, res, next)
+  } catch (error) {
+    next(error);
+  }
+};
 
 const handleError = (error, res) => {
   let response;
 
-  if (error instanceof mongoose.Error.ValidationError) {
-    const fieldErrors = [];
+  switch (true) {
+    case error instanceof mongoose.Error.ValidationError:
+      const fieldErrors = [];
 
-    for (field in error.errors) {
-      fieldErrors.push(new FieldError(field, error.errors[field].message));
-    }
+      for (field in error.errors) {
+        fieldErrors.push(new FieldError(field, error.errors[field].message));
+      }
 
-    response = new ValidationErrorResponse(fieldErrors, []);
-  } else {
-    response = new ErrorResponse(error.statusCode, error.message);
+      response = new ValidationErrorResponse(error.name, fieldErrors);
+      break;
+
+    case error instanceof mongoose.Error.CastError:
+      response = new ErrorResponse(error.name, 500, error.message);
+      break;
+
+    default:
+      if (error.statusCode === 404) {
+        response = new ErrorResponse('Resource Not Found', error.statusCode, error.message);
+      } else {
+        response = new ErrorResponse('Internal Server Error.', 500, 'Internal Server Error.');
+      }
+      break;
   }
 
   logger.error(error.message);
@@ -62,5 +81,6 @@ const handleError = (error, res) => {
 
 module.exports = {
   ErrorHandler,
-  handleError
+  handleError,
+  handleErrorAsync
 };
