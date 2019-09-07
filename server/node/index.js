@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const db = require('./app/db');
-const taskRoutes = require('./app/routes/task-routes');
+const taskController = require('./app/controllers/task-controller');
 const logger = require('./app/helpers/logging');
 const { logRequestsToFile, logResponsesToConsole, logResponsesToFile } = require('./app/config/morgan-config');
 const { handleError } = require('./app/helpers/error');
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 
-app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/tasks', taskController);
 
 app.use((err, _req, res, _next) => handleError(err, res));
 
