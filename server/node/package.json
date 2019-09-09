@@ -4,8 +4,9 @@
   "description": "Node.js server for TODO App.",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index"
+    "start": "NODE_ENV=prod node index",
+    "dev": "NODE_ENV=dev nodemon index",
+    "test": "NODE_ENV=test mocha 'tests/**/*.js' --exit"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.0",
     "nodemon": "^1.19.1"
   }
 }

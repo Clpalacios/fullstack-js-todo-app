@@ -7,9 +7,19 @@ const { handleError } = require('../helpers/error');
 const taskController = require('../controllers/task-controller');
 
 const expressLoader = async (app) => {
-  app.use(logResponsesToConsole(morgan));
-  app.use(logRequestsToFile(morgan));
-  app.use(logResponsesToFile(morgan));
+
+  if (!process.env.test) {
+    if (process.env.prod) {
+      app.use(logResponsesToConsole(morgan));
+      app.use(logRequestsToFile(morgan));
+      app.use(logResponsesToFile(morgan));
+    }
+
+    if (process.env.dev) {
+      app.use(logResponsesToConsole(morgan));
+    }
+  }
+
   app.use(express.json());
   app.use(helmet());
   app.use(cors());

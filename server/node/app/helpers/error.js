@@ -25,9 +25,6 @@ class FieldError {
 }
 
 class BaseErrorResponse {
-  type;
-  statusCode;
-
   constructor(type, statusCode) {
     this.type = type;
     this.statusCode = statusCode;
@@ -49,11 +46,7 @@ class ValidationErrorResponse extends BaseErrorResponse {
 }
 
 const handleErrorAsync = func => async (req, res, next) => {
-  try {
-    await func(req, res, next)
-  } catch (error) {
-    next(error);
-  }
+  func(req, res, next).catch(error => next(error));
 };
 
 const handleError = (error, res) => {
@@ -83,7 +76,9 @@ const handleError = (error, res) => {
       break;
   }
 
-  logger.error(error.message);
+  if (process.env.NODE_ENV !== 'test') {
+    logger.error(error.message);
+  }
   res.status(response.statusCode).json(response);
 };
 

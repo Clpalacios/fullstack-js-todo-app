@@ -4,17 +4,17 @@ const logger = require('./app/helpers/logging');
 
 const PORT = process.env.APP_SERVER_NODE_PORT || 8080;
 
-async function startServer() {
-  const app = express();
+const app = express();
 
+const startServer = async () => {
   await loaders.init(app);
 
-  app.listen(PORT, error => {
-    if (error) {
-      logger.error(error);
-    }
+  return app.listen(PORT, error => {
+    if (error) logger.error(error);
     logger.info(`App listening on port ${PORT}`)
   });
 }
 
 startServer();
+
+module.exports = app;
