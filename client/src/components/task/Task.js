@@ -7,7 +7,9 @@ import {
   CardContent,
   Checkbox,
   Grid,
+  Tooltip,
   Typography,
+  Zoom
 } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
@@ -56,14 +58,20 @@ const Task = props => {
         <Grid container>
           {!task.completed &&
             <Grid item xs={2} sm={1}>
-              <Checkbox
-                checked={false}
-                className={classes.check}
-                color="primary"
-                inputProps={{ 'aria-label': 'primary checkbox', }}
-                value={task.completed}
-                onChange={handleCompleteTask}
-              />
+              <Tooltip
+                aria-label="complete"
+                enterDelay={500}
+                title="Complete"
+                TransitionComponent={Zoom}>
+                <Checkbox
+                  checked={false}
+                  className={classes.check}
+                  color="primary"
+                  inputProps={{ 'aria-label': 'complete', }}
+                  value={task.completed}
+                  onChange={handleCompleteTask}
+                />
+              </Tooltip>
             </Grid>
           }
           <Grid item xs={task.completed ? 11 : 9} sm={task.completed ? 11 : 10}>
@@ -74,9 +82,15 @@ const Task = props => {
             </Typography>
           </Grid>
           <Grid item xs={1}>
-            <Delete
-              className={classes.deleteIcon}
-              onClick={handleDeleteTask} />
+            <Tooltip
+              aria-label="delete"
+              enterDelay={500}
+              title="Delete"
+              TransitionComponent={Zoom}>
+              <Delete
+                className={classes.deleteIcon}
+                onClick={handleDeleteTask} />
+            </Tooltip>
           </Grid>
         </Grid>
       </CardContent>
