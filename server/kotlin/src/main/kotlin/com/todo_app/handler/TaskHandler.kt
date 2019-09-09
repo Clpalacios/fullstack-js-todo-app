@@ -11,7 +11,7 @@ import java.net.URI
 @Component
 class TaskHandler(private val taskReactiveRepository: TaskReactiveRepository) {
 
-  private val uri = "/api/v1/tasks"
+  private val url = "/api/v1/tasks"
 
   fun getAllTasks(): Mono<ServerResponse> {
     return ServerResponse.ok().body(taskReactiveRepository.findAll())
@@ -23,17 +23,20 @@ class TaskHandler(private val taskReactiveRepository: TaskReactiveRepository) {
     return taskMono.flatMap { toCreate ->
       taskReactiveRepository.save(toCreate)
         .flatMap { createdTask ->
-          location = URI.create("$uri/${createdTask._id}")
+          location = URI.create("$url/${createdTask._id}")
           ServerResponse.created(location).body(Mono.just(createdTask))
         }
     }
   }
 
-  fun completeTask(id: String): Mono<ServerResponse> {
+  fun updateTask(id: String, taskToUpdate: Mono<Task>): Mono<ServerResponse> {
     return taskReactiveRepository.findById(id)
-      .flatMap { task ->
-        task.completed = true
-        ServerResponse.ok().body(taskReactiveRepository.save(task))
+      .flatMap { existingTask ->
+        taskToUpdate.flatMap {updatedTask ->
+          existingTask.completed = updatedTask.completed
+          existingTask.description = updatedTask.description
+          ServerResponse.ok().body(taskReactiveRepository.save(existingTask))
+        }
       }
       .switchIfEmpty(ServerResponse.notFound().build())
   }

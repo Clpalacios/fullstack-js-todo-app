@@ -9,17 +9,28 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.router
 
 @Configuration
-class TaskRoutingConfiguration() {
+class TaskRouter {
 
-  // Functional routing
+  private val url = "/api/v1/tasks"
+
   @Bean
   fun routerFunction(handler: TaskHandler): RouterFunction<ServerResponse> = router {
-    ("/api/v1/tasks")
+    (url)
       .nest {
         GET("") { handler.getAllTasks() }
-        POST("") { req -> handler.createTask(req.bodyToMono(Task::class.java)) }
-        DELETE("/{id}") { req -> handler.deleteTask(req.pathVariable("id")) }
-        PUT("/{id}/complete") { req -> handler.completeTask(req.pathVariable("id")) }
+        POST("") { req ->
+          val taskToCreate = req.bodyToMono(Task::class.java)
+          handler.createTask(taskToCreate)
+        }
+        DELETE("/{id}") { req ->
+          val id = req.pathVariable("id")
+          handler.deleteTask(id)
+        }
+        PUT("/{id}") { req ->
+          val id = req.pathVariable("id")
+          val taskToUpdate = req.bodyToMono(Task::class.java)
+          handler.updateTask(id, taskToUpdate)
+        }
       }
   }
 }
