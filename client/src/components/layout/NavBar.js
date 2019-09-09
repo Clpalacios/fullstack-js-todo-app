@@ -1,13 +1,17 @@
 import React from 'react';
 
-import { createStyles, makeStyles, AppBar, Typography } from '@material-ui/core';
+import { createStyles, makeStyles, AppBar, StepLabel, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme =>
   createStyles({
     appBar: {
-      backgroundColor: '#ff8a65',
+      backgroundColor: '#80cbc4',
       padding: theme.spacing(1),
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(2),
+      flexDirection: 'row'
+    },
+    appIcon: {
+      paddingLeft: theme.spacing(1)
     },
     title: {
       flexGrow: 1,
@@ -21,8 +25,11 @@ const NavBar = () => {
 
   return (
     <AppBar position="static" className={classes.appBar}>
+      <StepLabel className={classes.appIcon} icon={
+        <img src={require("../../assets/logo.svg")} alt="" width="24" height="24" />}
+      />
       <Typography variant="h5" className={classes.title}>
-        TODO App
+        Check me!
       </Typography>
     </AppBar>
   )

@@ -7,6 +7,7 @@ import {
   CardContent,
   Checkbox,
   Grid,
+  StepLabel,
   Tooltip,
   Typography,
   Zoom
@@ -19,16 +20,16 @@ const useStyles = makeStyles(theme =>
       marginLeft: theme.spacing(1),
     },
     check: {
-      color: theme.palette.primary.main
+      color: theme.palette.primary.main,
     },
-    completedTask: {
-      textDecoration: 'line-through'
+    completedTaskMark: {
+      padding: theme.spacing(1)
     },
     deleteIcon: {
-      color: theme.palette.secondary.main,
+      color: theme.palette.secondary.light,
       paddingTop: theme.spacing(1),
       '&:hover': {
-        color: theme.palette.secondary.light
+        color: theme.palette.secondary.main
       }
     },
     taskDescription: {
@@ -56,28 +57,34 @@ const Task = props => {
     <Card className={classes.card}>
       <CardContent className={classes.cardContent}>
         <Grid container>
-          {!task.completed &&
-            <Grid item xs={2} sm={1}>
+          <Grid item xs={2} sm={1}>
+            {
+              !task.completed &&
               <Tooltip
                 aria-label="complete"
                 enterDelay={500}
                 title="Complete"
                 TransitionComponent={Zoom}>
                 <Checkbox
-                  checked={false}
+                  checked={task.completed}
                   className={classes.check}
                   color="primary"
                   inputProps={{ 'aria-label': 'complete', }}
-                  value={task.completed}
                   onChange={handleCompleteTask}
                 />
               </Tooltip>
-            </Grid>
-          }
-          <Grid item xs={task.completed ? 11 : 9} sm={task.completed ? 11 : 10}>
+            }
+            {
+              task.completed &&
+              <StepLabel className={classes.completedTaskMark} icon={
+                <img src={require("../../assets/logo-inverted.svg")} alt="" width="24" height="24" />}
+              />
+            }
+          </Grid>
+          <Grid item xs={9} sm={10}>
             <Typography
               variant="body2"
-              className={`${classes.taskDescription} ${task.completed ? classes.completedTask : ''}`}>
+              className={classes.taskDescription}>
               {task.description}
             </Typography>
           </Grid>
