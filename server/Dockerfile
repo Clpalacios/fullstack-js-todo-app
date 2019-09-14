@@ -1,8 +1,8 @@
 FROM node:12.9.0-alpine
 
 # Create app directory
-RUN mkdir -p /src/app/server/node
-WORKDIR /src/app/server/node
+RUN mkdir -p /src/app
+WORKDIR /src/app
 
 # Install backend (node) app dependencies
 COPY package*.json ./
@@ -17,3 +17,6 @@ COPY . .
 EXPOSE 8080
 
 CMD [ "node", "index.js" ]
+
+# Run container as an unprivileged user
+USER node
