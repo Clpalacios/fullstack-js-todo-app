@@ -25,22 +25,21 @@ class FieldError {
 }
 
 class BaseErrorResponse {
-  constructor(type, statusCode) {
+  constructor(type) {
     this.type = type;
-    this.statusCode = statusCode;
   }
 }
 
 class ErrorResponse extends BaseErrorResponse {
-  constructor(type, statusCode, message) {
-    super(type, statusCode);
+  constructor(type, message) {
+    super(type);
     this.message = message;
   }
 }
 
 class ValidationErrorResponse extends BaseErrorResponse {
   constructor(type, fieldErrors) {
-    super(type, 422);
+    super(type);
     this.fieldErrors = fieldErrors;
   }
 }
@@ -51,6 +50,7 @@ const handleErrorAsync = func => async (req, res, next) => {
 
 const handleError = (error, res) => {
   let response;
+  let statusCode = 400;
 
   switch (true) {
     case error instanceof mongoose.Error.ValidationError:
@@ -64,14 +64,16 @@ const handleError = (error, res) => {
       break;
 
     case error instanceof mongoose.Error.CastError:
-      response = new ErrorResponse(error.name, 500, error.message);
+      response = new ErrorResponse(error.name, error.message);
       break;
 
     default:
       if (error.statusCode === 404) {
-        response = new ErrorResponse('Resource Not Found', error.statusCode, error.message);
+        statusCode = 404;
+        response = new ErrorResponse('Resource Not Found', error.message);
       } else {
-        response = new ErrorResponse('Internal Server Error.', 500, 'Internal Server Error.');
+        statusCode = 500;
+        response = new ErrorResponse('Internal Server Error.', 'Internal Server Error.');
       }
       break;
   }
@@ -79,7 +81,8 @@ const handleError = (error, res) => {
   if (process.env.NODE_ENV !== 'test') {
     logger.error(error.message);
   }
-  res.status(response.statusCode).json(response);
+
+  res.status(statusCode).json(response);
 };
 
 module.exports = {
