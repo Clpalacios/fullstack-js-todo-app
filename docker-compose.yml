@@ -8,8 +8,6 @@ services:
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: ${APP_DB_MONGO_NAME}
-    volumes:
-      - ./server/node/app/db:/src/app/server/node/app/db
     ports:
       - ${APP_DB_MONGO_PORT}:${APP_DB_MONGO_PORT}
 
@@ -24,9 +22,7 @@ services:
       APP_SERVER_NODE_PORT: ${APP_SERVER_NODE_PORT}
       APP_DB_MONGO_URI: ${APP_DB_MONGO_URI}
     ports:
-      - ${APP_SERVER_NODE_PORT}:${APP_SERVER_NODE_PORT}      
-    volumes:
-      - ./server:/src/app
+      - ${APP_SERVER_NODE_PORT}:${APP_SERVER_NODE_PORT}
     links:
       - db_mongo
     depends_on:
@@ -42,9 +38,5 @@ services:
       - ${APP_CLIENT_PORT}
     ports:
       - ${APP_CLIENT_PORT}:${APP_CLIENT_PORT}
-    volumes:
-      - ./client/assets:/src/app/client/assets
-      - ./client/public:/src/app/client/public
-      - ./client/src:/src/app/client/src
     links:
       - server_node

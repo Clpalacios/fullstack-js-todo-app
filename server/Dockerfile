@@ -11,7 +11,6 @@ RUN npm install
 # if building code for production
 # npm ci --only=production
 
-# Bundle app source
 COPY . .
 
 EXPOSE 8080
